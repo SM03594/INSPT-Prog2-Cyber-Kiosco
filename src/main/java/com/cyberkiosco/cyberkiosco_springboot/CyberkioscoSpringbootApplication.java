@@ -8,6 +8,7 @@ public class CyberkioscoSpringbootApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(CyberkioscoSpringbootApplication.class, args);
+                System.out.println("aaa");
 	}
 
 }
