@@ -1,6 +1,7 @@
 
 package com.cyberkiosco.cyberkiosco_springboot.entity;
 
+import com.cyberkiosco.cyberkiosco_springboot.entity.exceptions.StockInsuficienteException;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,6 +30,7 @@ public class Producto {
     
     
     public void setNombre(String nombre) {
+        // .trim() elimina los espacios en blanco al principio y al final del string
         if (nombre == null || nombre.trim().isEmpty()) {
             throw new IllegalArgumentException("El nombre del producto no puede estar vacio.");
         }
@@ -44,7 +46,7 @@ public class Producto {
             stockRestante = this.stock - cantidad;
             
             if(stockRestante < 0) {
-                throw new IllegalArgumentException("No se puede restar una cantidad mayor al stock de la que este tiene.");
+                throw new StockInsuficienteException("No se puede restar una cantidad mayor al stock de la que este tiene.");
             }
         }
         
@@ -79,10 +81,30 @@ public class Producto {
         this.imagen = imagen;
     }
 
+    public void setId_producto(long id_producto) {
+        if (id_producto < 0) {
+            throw new IllegalArgumentException("El id_producto no puede ser menor a cero.");
+        }
+        this.id_producto = id_producto;
+    }
+    
+    public void setId_categoria(int id_categoria) {
+        if (id_categoria < 0) {
+            throw new IllegalArgumentException("El id_categoria no puede ser menor a cero.");
+        }
+        this.id_categoria = id_categoria;
+    }
+
+    public void setId_marca(int id_marca) {
+        if (id_marca < 0) {
+            throw new IllegalArgumentException("El id_marca no puede ser menor a cero.");
+        }
+        this.id_marca = id_marca;
+    }
+    
     @Override
     public String toString() {
         return "Producto{" + "id_producto=" + id_producto + ", nombre=" + nombre + ", stock=" + stock + ", precio=" + precio + ", imagen=" + imagen + ", id_categoria=" + id_categoria + ", id_marca=" + id_marca + '}';
     }
-    
     
 }
