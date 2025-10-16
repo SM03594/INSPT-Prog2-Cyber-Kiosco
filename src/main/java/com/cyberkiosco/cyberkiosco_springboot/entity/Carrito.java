@@ -1,11 +1,13 @@
 
 package com.cyberkiosco.cyberkiosco_springboot.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +22,7 @@ public class Carrito {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_carrito")
     private Long id;
     private double precio_total;
     private LocalDateTime fecha_compra;
@@ -49,5 +52,34 @@ public class Carrito {
         }
         this.fecha_compra = fecha_compra;
     }
+
+    @Override
+    public String toString() {
+        return "Carrito{" + "id=" + id + ", precio_total=" + precio_total + ", fecha_compra=" + fecha_compra + '}';
+    }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Carrito other = (Carrito) obj;
+        if (Double.doubleToLongBits(this.precio_total) != Double.doubleToLongBits(other.precio_total)) {
+            return false;
+        }
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        return Objects.equals(this.fecha_compra, other.fecha_compra);
+    }
+    
+    
     
 }
