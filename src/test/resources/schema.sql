@@ -31,7 +31,7 @@ CREATE TABLE `carrito` (
 	`id_carrito` INTEGER NOT NULL AUTO_INCREMENT,
 	`precio_total` DOUBLE NOT NULL,
 	`fecha_compra` DATETIME NOT NULL,
-	`id_usuario` INTEGER NOT NULL,
+	`id_usuario` INTEGER,       -- provisoriamente puede ser null
 	PRIMARY KEY(`id_carrito`)
 );
 
