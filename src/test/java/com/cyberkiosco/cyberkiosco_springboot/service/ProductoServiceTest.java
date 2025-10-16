@@ -145,17 +145,19 @@ class ProductoServiceTest {
                 crearProductoEjemplo3()
         );
 
+        Long totalAntes = productoService.contarProductos();
+        
         productoService.guardarListaProductos(productos);
         
         assertTrue(productoService.existePorId(productos.get(0).getId()));
-        assertEquals(productos.get(0).getNombre(), productoService.encontrarPorId(17L).getNombre());
+        assertEquals(productos.get(0).getNombre(), productoService.encontrarPorId(productos.get(0).getId()).getNombre());
         
         assertTrue(productoService.existePorId(productos.get(0).getId()));
-        assertEquals(productos.get(1).getNombre(), productoService.encontrarPorId(18L).getNombre());
+        assertEquals(productos.get(1).getNombre(), productoService.encontrarPorId(productos.get(1).getId()).getNombre());
         
-        Long total = productoService.contarProductos();
+        Long totalDespues = productoService.contarProductos();
         
-        //assertEquals(18L, total);
+        assertEquals(2L, totalDespues - totalAntes);
     }
     
 }
