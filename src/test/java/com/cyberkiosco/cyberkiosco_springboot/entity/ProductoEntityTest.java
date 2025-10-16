@@ -59,7 +59,7 @@ public class ProductoEntityTest {
         Producto producto = crearProductoEj();
 
         assertThrows(IllegalArgumentException.class, () -> {
-            producto.setId_producto(-1);
+            producto.setId(-1);
         });
     }
 
@@ -68,7 +68,7 @@ public class ProductoEntityTest {
         Producto producto = crearProductoEj();
 
         assertDoesNotThrow(() -> {
-            producto.setId_producto(0);
+            producto.setId(0);
         });
     }
 
@@ -77,7 +77,7 @@ public class ProductoEntityTest {
         Producto producto = crearProductoEj();
 
         assertDoesNotThrow(() -> {
-            producto.setId_producto(12345);
+            producto.setId(12345);
         });
     }
     

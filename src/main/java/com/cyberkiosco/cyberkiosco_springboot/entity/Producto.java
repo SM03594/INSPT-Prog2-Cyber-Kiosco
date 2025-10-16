@@ -20,13 +20,14 @@ public class Producto {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_producto;
+    private Long id;
     private String nombre;
     private int stock;
     private double precio;
     private String imagen;
     private int id_categoria;
     private int id_marca;
+    //pendiente implementar categoria y marca correctamente con JPA
     
     
     public void setNombre(String nombre) {
@@ -81,11 +82,11 @@ public class Producto {
         this.imagen = imagen;
     }
 
-    public void setId_producto(long id_producto) {
-        if (id_producto < 0) {
+    public void setId(long id) {
+        if (id < 0) {
             throw new IllegalArgumentException("El id_producto no puede ser menor a cero.");
         }
-        this.id_producto = id_producto;
+        this.id = id;
     }
     
     public void setId_categoria(int id_categoria) {
@@ -104,7 +105,7 @@ public class Producto {
     
     @Override
     public String toString() {
-        return "Producto{" + "id_producto=" + id_producto + ", nombre=" + nombre + ", stock=" + stock + ", precio=" + precio + ", imagen=" + imagen + ", id_categoria=" + id_categoria + ", id_marca=" + id_marca + '}';
+        return "Producto{" + "id_producto=" + id + ", nombre=" + nombre + ", stock=" + stock + ", precio=" + precio + ", imagen=" + imagen + ", id_categoria=" + id_categoria + ", id_marca=" + id_marca + '}';
     }
     
 }
