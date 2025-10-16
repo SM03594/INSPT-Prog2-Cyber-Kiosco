@@ -1,158 +1,161 @@
 package com.cyberkiosco.cyberkiosco_springboot.service;
 
 import com.cyberkiosco.cyberkiosco_springboot.entity.Producto;
-import com.cyberkiosco.cyberkiosco_springboot.repository.ProductoRepository;
+import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 
 import java.util.List;
-import java.util.Optional;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
+@ActiveProfiles("test")  // Activa la configuración de H2
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ProductoServiceTest {
 
-    @Mock
-    private ProductoRepository productoRepository;
 
-    @InjectMocks
+    @Autowired
     private ProductoService productoService;
 
 
     private Producto crearProductoEjemplo1() {
         return new Producto(
-                1L,
-                "agua mineral",
+                null,  // hay que poner la id null porque le JPA se encarga de darsela
+                "Agua Mineral Saborizada",
                 10,
                 15.0,
-                "img/aguaMineral.jpg",
+                "img/aguaMineralSaborizada.jpg",
                 2,
-                5
+                2
         );
     }
     
     private Producto crearProductoEjemplo2() {
         return new Producto(
-                2L,
-                "barrita de chocolate",
+                null,
+                "Barra de Fijoles",
                 35,
                 20.0,
-                "img/barraChocolate.jpg",
+                "img/barraDeFijoles.png",
                 1,
                 3
         );
     }
     
+    private Producto crearProductoEjemplo3() {
+        return new Producto(
+            null,
+            "Galletas Integrales",
+            50,
+            15.5,
+            "img/galletasIntegrales.png",
+            1,
+            4
+        );
+    }
+    
+    // Los tests se hacen en orden aleatorio excepto por el uso de @Order
 
     @Test
+    @Order(1) //porque luego si se agregan o eliminan registros con los otros tests falla
     void testObtenerTodosLosProductos() {
-        List<Producto> mockProductos = List.of(
-                crearProductoEjemplo1(),
-                crearProductoEjemplo2()
-        );
+        ArrayList<Producto> listaProductos;
+        listaProductos = (ArrayList<Producto>) this.productoService.obtenerTodosLosProductos();
         
-        /*
-            condicionar la respuesta de los metodos de la capa Repository
-            a fines del test ya que al ser el obj productoRepository un Mock
-            no va a interactuar con la BDD
-        */
-        when(productoRepository.findAll()).thenReturn(mockProductos); 
-
-        List<Producto> resultado = productoService.obtenerTodosLosProductos();
-
-        assertEquals(2, resultado.size());
+        for(Producto producto : listaProductos) {
+            System.out.println(producto.toString());
+        }
         
-        /*
-            verifica que se llamo a findAll() de productoRepository
-        */
-        verify(productoRepository).findAll();
+        assertEquals(15, listaProductos.size()); //en principio son 15 productos en total
     }
 
     
     @Test
     void testEncontrarPorIdExistente() {
-        Producto producto = crearProductoEjemplo1();
-        
-        /*
-            Optional es una clase static que sirve para interactuar con objs que
-            pueden llegar a ser null, el proposito de su uso es evitar Null Pointer Exception
-        */
-        when(productoRepository.findById(1L)).thenReturn(Optional.of(producto));
-
         Producto resultado = productoService.encontrarPorId(1L);
-
+        
         assertNotNull(resultado);
-        assertEquals("agua mineral", resultado.getNombre());
-        verify(productoRepository).findById(1L);
+        assertEquals("Chips Picantes", resultado.getNombre());
     }
 
     
     @Test
     void testEncontrarPorIdNoExistente() {
-        when(productoRepository.findById(99L)).thenReturn(Optional.empty());
-
-        Producto resultado = productoService.encontrarPorId(99L);
-
+        Producto resultado = productoService.encontrarPorId(12345L);
+        
         assertNull(resultado);
-        verify(productoRepository).findById(99L);
     }
 
     
     @Test
     void testExistePorId() {
-        when(productoRepository.existsById(1L)).thenReturn(true);
-
-        boolean existe = productoService.existePorId(1L);
-
-        assertTrue(existe);
-        verify(productoRepository).existsById(1L);
+        Boolean resultado = productoService.existePorId(2L);
+        
+        assertTrue(resultado);
+    }
+    
+    
+    @Test
+    void testNoExistePorId() {
+        Boolean resultado = productoService.existePorId(8521L);
+        
+        assertFalse(resultado);
     }
 
     
     @Test
     void testGuardarProducto() {
-        Producto producto = crearProductoEjemplo1();
+        Producto producto = crearProductoEjemplo1(); 
 
-        productoService.guardarProducto(producto);
-
-        verify(productoRepository).save(producto);
+        productoService.guardarProducto(producto); // +1 producto cantidad actual 16
+        
+        assertTrue(productoService.existePorId(producto.getId()));
+        assertEquals("Agua Mineral Saborizada", productoService.encontrarPorId(producto.getId()).getNombre());
     }
 
     
     @Test
     void testEliminarProductoPorId() {
-        productoService.eliminarProductoPorId(1L);
-
-        verify(productoRepository).deleteById(1L);
+        productoService.eliminarProductoPorId(1L); // -1 producto cantidad acutal 15
+        
+        assertFalse(productoService.existePorId(1L));
     }
 
     
     @Test
+    @Order(2) //porque luego si se agregan o eliminan registros con los otros tests falla
     void testContarProductos() {
-        when(productoRepository.count()).thenReturn(3L);
-
-        long total = productoService.contarProductos();
-
-        assertEquals(3L, total);
-        verify(productoRepository).count();
+        Long total = productoService.contarProductos(); 
+        
+        assertEquals(15L, total);
     }
 
     
     @Test
     void testGuardarListaProductos() {
         List<Producto> productos = List.of(
-                crearProductoEjemplo1(),
-                crearProductoEjemplo2()
+                crearProductoEjemplo2(),
+                crearProductoEjemplo3()
         );
 
         productoService.guardarListaProductos(productos);
-
-        verify(productoRepository).saveAll(productos);
+        
+        assertTrue(productoService.existePorId(productos.get(0).getId()));
+        assertEquals(productos.get(0).getNombre(), productoService.encontrarPorId(17L).getNombre());
+        
+        assertTrue(productoService.existePorId(productos.get(0).getId()));
+        assertEquals(productos.get(1).getNombre(), productoService.encontrarPorId(18L).getNombre());
+        
+        Long total = productoService.contarProductos();
+        
+        //assertEquals(18L, total);
     }
+    
 }

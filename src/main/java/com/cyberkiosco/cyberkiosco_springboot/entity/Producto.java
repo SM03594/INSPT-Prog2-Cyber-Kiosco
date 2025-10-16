@@ -2,6 +2,7 @@
 package com.cyberkiosco.cyberkiosco_springboot.entity;
 
 import com.cyberkiosco.cyberkiosco_springboot.entity.exceptions.StockInsuficienteException;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,6 +21,7 @@ public class Producto {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_producto")
     private Long id;
     private String nombre;
     private int stock;
