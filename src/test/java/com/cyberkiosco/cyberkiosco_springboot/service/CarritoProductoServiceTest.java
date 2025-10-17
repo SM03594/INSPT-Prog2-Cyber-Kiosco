@@ -1,10 +1,9 @@
 package com.cyberkiosco.cyberkiosco_springboot.service;
 
+import com.cyberkiosco.cyberkiosco_springboot.entity.Carrito;
 import com.cyberkiosco.cyberkiosco_springboot.entity.CarritoProducto;
 import com.cyberkiosco.cyberkiosco_springboot.entity.Producto;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
@@ -97,6 +96,48 @@ class CarritoProductoServiceTest {
         carritoProductoService.guardar(id_carrito, id_producto, cantidad, precio_producto);
         
         assertTrue(carritoProductoService.existePorId(id_carrito, id_producto));
+    }
+    
+    
+    @Test
+    @Order(1)
+    void testObtenerTodosLosProductosEnCarrito() {
+        List<Producto> listaProductos = carritoProductoService.obtenerTodosLosProductosEnCarrito(1L);
+        List<Producto> productosEsperados = List.of(
+                productoService.encontrarPorId(1L),
+                productoService.encontrarPorId(3L),
+                productoService.encontrarPorId(5L)
+        );
+        
+        assertEquals(3, listaProductos.size()); //hay 3 productos en el carrito con id 1 en principio
+        
+        System.out.println(
+            listaProductos.get(0).toString() + "\n" +
+            listaProductos.get(1).toString() + "\n" +
+            listaProductos.get(2).toString() + "\n"
+        );
+        
+        assertTrue(listaProductos.containsAll(productosEsperados), "No todos los productos esperados están en el carrito.");
+    }
+    
+    
+    @Test
+    @Order(2)
+    void testObtenerTodosCarritosConProducto() {
+        List<Carrito> listaCarritos = carritoProductoService.obtenerTodosLosCarritosConProducto(2L);
+        List<Carrito> carritosEsperados = List.of(
+                carritoService.encontrarPorId(2L),
+                carritoService.encontrarPorId(10L)
+        );
+                
+        assertEquals(2, listaCarritos.size()); //hay 2 carritos con producto con id 1 en principio
+        
+        System.out.println(
+            listaCarritos.get(0).toString() + "\n" +
+            listaCarritos.get(1).toString() + "\n"
+        );
+        
+        assertTrue(listaCarritos.containsAll(carritosEsperados), "No todos los carritos esperados estan en la lista.");
     }
     
 }

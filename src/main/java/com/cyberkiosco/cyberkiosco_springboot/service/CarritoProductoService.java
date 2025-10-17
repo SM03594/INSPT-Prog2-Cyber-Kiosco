@@ -8,6 +8,7 @@ import com.cyberkiosco.cyberkiosco_springboot.entity.embeddable.CarritoProductoK
 import com.cyberkiosco.cyberkiosco_springboot.repository.CarritoProductoRepository;
 import com.cyberkiosco.cyberkiosco_springboot.repository.CarritoRepository;
 import com.cyberkiosco.cyberkiosco_springboot.repository.ProductoRepository;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,17 +115,57 @@ public class CarritoProductoService {
         this.eliminarPorId(key);
     }
     
-    /*
-    // Obtener productos de un carrito
-    public List<CarritoProducto> obtenerProductosDeCarrito(Long id_carrito) {
+    //obtiene todos los Objetos CarritoProducto que tienen un id_carrito
+    public List<CarritoProducto> listaDeCarritoProductoPorId_carrito(Long id_carrito) {
         return carritoProductoRepository.findByCarrito_Id(id_carrito);
     }
     
-    
-    // Obtener los carritos que contienen un producto específico
-    public List<CarritoProducto> obtenerCarritosConProducto(Long id_producto) {
+    //obtiene todos los Objetos CarritoProducto que tienen un id_producto
+    public List<CarritoProducto> listaDeCarritoProductoPorId_producto(Long id_producto) {
         return carritoProductoRepository.findByProducto_Id(id_producto);
     }
-    */
+    
+    //obtiene todos los productos de una lista de CarritoProducto
+    public List<Producto> listaDeProductosDeListaCarritoProducto(List<CarritoProducto> listaCarritoProducto) {
+        ArrayList<Producto> productos = new ArrayList<>();
+        Producto productoAcutal;
+        
+        for(CarritoProducto carritoProducto : listaCarritoProducto) {
+            productoAcutal = carritoProducto.getProducto();
+            productos.add(productoAcutal);
+        }
+        
+        return productos;
+    }
+    
+    
+    //obtiene todos los carritos de una lista de CarritoProducto
+    public List<Carrito> listaDeCarritosDeListaCarritoProducto(List<CarritoProducto> listaCarritoProducto) {
+        ArrayList<Carrito> carritos = new ArrayList<>();
+        Carrito carritoAcutal;
+        
+        for(CarritoProducto carritoProducto : listaCarritoProducto) {
+            carritoAcutal = carritoProducto.getCarrito();
+            carritos.add(carritoAcutal);
+        }
+        
+        return carritos;
+    }
+    
+    //obtiene todos los productos que se encuentran en un carrito
+    public List<Producto> obtenerTodosLosProductosEnCarrito(Long id_carrito) {
+        List<CarritoProducto> listaCarritoProducto = listaDeCarritoProductoPorId_carrito(id_carrito);
+        List<Producto> listaProductosEnCarrito = listaDeProductosDeListaCarritoProducto(listaCarritoProducto);
+    
+        return listaProductosEnCarrito;
+    }
+    
+    //obtiene todos los carritos que contienen un producto especifico
+    public List<Carrito> obtenerTodosLosCarritosConProducto(Long id_producto) {
+        List<CarritoProducto> listaCarritoProducto = listaDeCarritoProductoPorId_producto(id_producto);
+        List<Carrito> listaCarritosConProducto = listaDeCarritosDeListaCarritoProducto(listaCarritoProducto);
+    
+        return listaCarritosConProducto;
+    }
     
 }
