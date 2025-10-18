@@ -100,7 +100,9 @@ public class RolServiceTest {
     
     @Test
     @Order(4)
-    void testEliminarCarritoPorId() {
+    void testEliminarRolPorId() {
+        assertTrue(rolService.existePorId(3L));
+        
         rolService.eliminarPorId(3L);
         
         assertFalse(rolService.existePorId(3L));
