@@ -7,6 +7,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+
 import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,7 +32,11 @@ public class Producto {
     private double precio;
     private String imagen;
     private int id_categoria;
-    private int id_marca;
+    // private int id_marca;
+
+    @ManyToOne
+    @JoinColumn(name = "id_marca")
+    private Marca marca;
     //pendiente implementar categoria y marca correctamente con JPA
     
     
@@ -99,16 +106,22 @@ public class Producto {
         this.id_categoria = id_categoria;
     }
 
-    public void setId_marca(int id_marca) {
-        if (id_marca < 0) {
-            throw new IllegalArgumentException("El id_marca no puede ser menor a cero.");
-        }
-        this.id_marca = id_marca;
-    }
+    // public void setId_marca(int id_marca) {
+    //     if (id_marca < 0) {
+    //         throw new IllegalArgumentException("El id_marca no puede ser menor a cero.");
+    //     }
+    //     this.id_marca = id_marca;
+    // }
     
+    public void setMarca(Marca marca) {
+        if(marca == null){
+            throw new IllegalArgumentException("la marca debe existir");
+        }
+        this.marca = marca;
+    }
     @Override
     public String toString() {
-        return "Producto{" + "id_producto=" + id + ", nombre=" + nombre + ", stock=" + stock + ", precio=" + precio + ", imagen=" + imagen + ", id_categoria=" + id_categoria + ", id_marca=" + id_marca + '}';
+        return "Producto{" + "id_producto=" + id + ", nombre=" + nombre + ", stock=" + stock + ", precio=" + precio + ", imagen=" + imagen + ", id_categoria=" + id_categoria + ", id_marca=" + marca.getId() + '}';
     }
 
     @Override
@@ -120,7 +133,7 @@ public class Producto {
         hash = 13 * hash + (int) (Double.doubleToLongBits(this.precio) ^ (Double.doubleToLongBits(this.precio) >>> 32));
         hash = 13 * hash + Objects.hashCode(this.imagen);
         hash = 13 * hash + this.id_categoria;
-        hash = 13 * hash + this.id_marca;
+        hash = 13 * hash + Objects.hashCode(this.marca);
         return hash;
     }
 
@@ -145,7 +158,7 @@ public class Producto {
         if (this.id_categoria != other.id_categoria) {
             return false;
         }
-        if (this.id_marca != other.id_marca) {
+        if (this.marca != other.marca) {
             return false;
         }
         if (!Objects.equals(this.nombre, other.nombre)) {
