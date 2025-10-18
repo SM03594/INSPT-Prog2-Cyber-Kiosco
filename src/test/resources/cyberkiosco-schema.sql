@@ -48,7 +48,7 @@ CREATE TABLE `carrito_producto` (
 
 
 CREATE TABLE `rol` (
-        `id_rol` INTEGER NOT NULL,
+        `id_rol` INTEGER NOT NULL AUTO_INCREMENT,
         `nombre` VARCHAR(255) NOT NULL,
         PRIMARY KEY(`id_rol`)
 );
