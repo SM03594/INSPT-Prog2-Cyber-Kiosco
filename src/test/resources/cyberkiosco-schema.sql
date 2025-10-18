@@ -1,3 +1,5 @@
+-- CREATE DATABASE IF NOT EXISTS cyberkiosco;
+-- USE cyberkiosco;
 
 
 CREATE TABLE `categoria` (
@@ -20,7 +22,7 @@ CREATE TABLE `producto` (
 	`stock` INTEGER NOT NULL,
 	`precio` DOUBLE NOT NULL,
 	`imagen` VARCHAR(255) NOT NULL,
-	`descripcion` VARCHAR(255),     --modificacion para que acepte valores nulos
+	`descripcion` VARCHAR(255),     -- modificacion para que acepte valores nulos
 	`id_categoria` INTEGER NOT NULL,
 	`id_marca` INTEGER NOT NULL,
 	PRIMARY KEY(`id_producto`)
@@ -45,15 +47,10 @@ CREATE TABLE `carrito_producto` (
 );
 
 
-CREATE TABLE `usuario` (
-	`id_usuario` INTEGER NOT NULL AUTO_INCREMENT,
-	`nombre` VARCHAR(255) NOT NULL UNIQUE,
-	`apellido` VARCHAR(255) NOT NULL,
-	`mail` VARCHAR(255) NOT NULL,
-	`password` VARCHAR(255) NOT NULL,
-	`balance` DOUBLE NOT NULL DEFAULT 0,
-	`rol` ENUM('ADMIN', 'CLIENTE') NOT NULL,
-	PRIMARY KEY(`id_usuario`)
+CREATE TABLE `rol` (
+        `id_rol` INTEGER NOT NULL,
+        `nombre` VARCHAR(255) NOT NULL,
+        PRIMARY KEY(`id_rol`)
 );
 
 
@@ -66,21 +63,43 @@ CREATE TABLE `perfil` (
 );
 
 
+CREATE TABLE `usuario` (
+	`id_usuario` INTEGER NOT NULL AUTO_INCREMENT,
+	`nombre` VARCHAR(255) NOT NULL UNIQUE,
+	`apellido` VARCHAR(255) NOT NULL,
+	`mail` VARCHAR(255) NOT NULL,
+	`password` VARCHAR(255) NOT NULL,
+	`balance` DOUBLE NOT NULL DEFAULT 0,
+	`id_rol` INTEGER NOT NULL,
+	PRIMARY KEY(`id_usuario`)
+);
+
+
 ALTER TABLE `producto`
 ADD FOREIGN KEY(`id_categoria`) REFERENCES `categoria`(`id_categoria`)
 ON UPDATE CASCADE ON DELETE CASCADE;
+
 ALTER TABLE `producto`
 ADD FOREIGN KEY(`id_marca`) REFERENCES `marca`(`id_marca`)
 ON UPDATE CASCADE ON DELETE CASCADE;
+
 ALTER TABLE `carrito_producto`
 ADD FOREIGN KEY(`id_carrito`) REFERENCES `carrito`(`id_carrito`)
 ON UPDATE CASCADE ON DELETE CASCADE;
+
 ALTER TABLE `carrito_producto`
 ADD FOREIGN KEY(`id_producto`) REFERENCES `producto`(`id_producto`)
 ON UPDATE CASCADE ON DELETE CASCADE;
+
 ALTER TABLE `carrito`
 ADD FOREIGN KEY(`id_usuario`) REFERENCES `usuario`(`id_usuario`)
 ON UPDATE CASCADE ON DELETE CASCADE;
+
+ALTER TABLE `usuario`
+ADD FOREIGN KEY(`id_rol`) REFERENCES `rol`(`id_rol`)
+ON UPDATE CASCADE ON DELETE CASCADE;
+
 ALTER TABLE `perfil`
 ADD FOREIGN KEY(`id_usuario`) REFERENCES `usuario`(`id_usuario`)
 ON UPDATE CASCADE ON DELETE CASCADE;
+
