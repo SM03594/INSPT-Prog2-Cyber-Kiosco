@@ -28,8 +28,8 @@ public class RolService {
         return rolRepository.existsById(id);
     }
     
-    public void guardar(Rol producto) {
-        rolRepository.save(producto); //guarda y actualiza si ya existe
+    public void guardar(Rol rol) {
+        rolRepository.save(rol); //guarda y actualiza si ya existe
     }
     
     public void eliminarPorId(long id) {
