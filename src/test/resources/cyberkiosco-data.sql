@@ -28,13 +28,13 @@ INSERT INTO `producto` (`nombre`, `stock`, `precio`, `imagen`, `descripcion`, `i
 ('Panchos', 90, 1.99, 'panchos.jpg', 'Salchichas de pollo con pan suave', 1, 3)
 ;
 
-INSERT INTO rol (id_rol, nombre) VALUES 
-(1, 'Administrador'),
-(2, 'Usuario')
+INSERT INTO rol (nombre) VALUES 
+('Administrador'),
+('Usuario')
 ;
 
 
-INSERT INTO usuario (nombre, apellido, mail, password, balance, id_rol) VALUES
+INSERT INTO usuario (nombre, apellido, mail, password, fondos, id_rol) VALUES
 ('adminuser', 'Gómez', 'admin@example.com', 'admin123', 1000.00, 1),
 ('Jose', 'Pérez', 'jose.perez@example.com', 'jose123', 500.00, 2),
 ('Maria', 'López', 'maria.lopez@example.com', 'maria123', 200.00, 2),
