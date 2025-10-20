@@ -25,11 +25,11 @@ public class Marca {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_marca")
-    private long id;
+    private Long id;
 
     private String nombre;
 
-    public void setId(int id) {
+    public void setId(long id) {
         if (id <= 0) {
             throw new IllegalArgumentException("el id de la marca debe ser mayor a cero");
         }

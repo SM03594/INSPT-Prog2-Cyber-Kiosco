@@ -12,7 +12,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 public class ProductoEntityTest {
-    
+    public Marca createMarcaEj(){
+        return new Marca(1l, "arcor", null);
+    }
     private Producto crearProductoEj() {
         return new Producto(
                 1L,
@@ -21,7 +23,7 @@ public class ProductoEntityTest {
                 1.5,
                 "img/caramelo.jpg",
                 1,
-                3
+                createMarcaEj()
         );
     }
     

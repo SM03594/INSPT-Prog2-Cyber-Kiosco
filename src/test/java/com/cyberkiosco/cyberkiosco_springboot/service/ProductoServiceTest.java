@@ -1,12 +1,17 @@
 package com.cyberkiosco.cyberkiosco_springboot.service;
 
+import com.cyberkiosco.cyberkiosco_springboot.entity.Marca;
 import com.cyberkiosco.cyberkiosco_springboot.entity.Producto;
+import com.cyberkiosco.cyberkiosco_springboot.repository.MarcaRepository;
+
 import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -25,6 +30,22 @@ class ProductoServiceTest {
 
     @Autowired
     private ProductoService productoService;
+    
+    // 💡 Paso 1: Usar variables estáticas para almacenar las marcas persistidas
+    private static Marca MARCA_2;
+    private static Marca MARCA_3;
+    private static Marca MARCA_4;
+    
+    // 💡 PASO 2: Método para asegurar que las marcas existan antes de las pruebas.
+    // Usamos @BeforeAll (estático) para que se ejecute una sola vez
+    @BeforeAll
+    static void setup(@Autowired MarcaRepository marcaRepository) {
+        // Creamos y persistimos las marcas que usaremos en los productos de ejemplo
+        // El id es nulo para que la base de datos se lo asigne
+        MARCA_2 = marcaRepository.save(new Marca(null, "Marca Test 2", null));
+        MARCA_3 = marcaRepository.save(new Marca(null, "Marca Test 3", null));
+        MARCA_4 = marcaRepository.save(new Marca(null, "Marca Test 4", null));
+    }
 
 
     private Producto crearProductoEjemplo1() {
@@ -35,7 +56,7 @@ class ProductoServiceTest {
                 15.0,
                 "img/aguaMineralSaborizada.jpg",
                 2,
-                2
+                MARCA_2
         );
     }
     
@@ -47,7 +68,7 @@ class ProductoServiceTest {
                 20.0,
                 "img/barraDeFijoles.png",
                 1,
-                3
+                MARCA_3
         );
     }
     
@@ -59,7 +80,7 @@ class ProductoServiceTest {
             15.5,
             "img/galletasIntegrales.png",
             1,
-            4
+            MARCA_4
         );
     }
     
