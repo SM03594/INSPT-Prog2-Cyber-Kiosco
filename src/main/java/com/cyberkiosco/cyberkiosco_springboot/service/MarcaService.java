@@ -17,15 +17,15 @@ public class MarcaService {
         this.marcaRepository.save(marca);
     }
 
-    public Marca findById(int id){
+    public Marca findById(long id){
         return this.marcaRepository.findById(id).orElse(null);
     }
 
-    public boolean existePorId(int id){
+    public boolean existePorId(long id){
         return this.marcaRepository.existsById(id);
     }
 
-    public void deleteById(int id){
+    public void deleteById(long id){
         this.marcaRepository.deleteById(id);
     }
 
