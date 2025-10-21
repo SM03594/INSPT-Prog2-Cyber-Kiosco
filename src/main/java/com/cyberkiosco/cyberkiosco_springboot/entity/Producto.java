@@ -10,13 +10,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
-import java.util.Objects;
+
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 
-
+@EqualsAndHashCode(of = "id")//solo el id por que sino no funciona
 @Entity
 @Getter
 @NoArgsConstructor 
@@ -124,50 +125,50 @@ public class Producto {
         return "Producto{" + "id_producto=" + id + ", nombre=" + nombre + ", stock=" + stock + ", precio=" + precio + ", imagen=" + imagen + ", id_categoria=" + id_categoria + ", id_marca=" + marca.getId() + '}';
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 13 * hash + Objects.hashCode(this.id);
-        hash = 13 * hash + Objects.hashCode(this.nombre);
-        hash = 13 * hash + this.stock;
-        hash = 13 * hash + (int) (Double.doubleToLongBits(this.precio) ^ (Double.doubleToLongBits(this.precio) >>> 32));
-        hash = 13 * hash + Objects.hashCode(this.imagen);
-        hash = 13 * hash + this.id_categoria;
-        hash = 13 * hash + Objects.hashCode(this.marca);
-        return hash;
-    }
+    // @Override
+    // public int hashCode() {
+    //     int hash = 7;
+    //     hash = 13 * hash + Objects.hashCode(this.id);
+    //     hash = 13 * hash + Objects.hashCode(this.nombre);
+    //     hash = 13 * hash + this.stock;
+    //     hash = 13 * hash + (int) (Double.doubleToLongBits(this.precio) ^ (Double.doubleToLongBits(this.precio) >>> 32));
+    //     hash = 13 * hash + Objects.hashCode(this.imagen);
+    //     hash = 13 * hash + this.id_categoria;
+    //     hash = 13 * hash + Objects.hashCode(this.marca);
+    //     return hash;
+    // }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Producto other = (Producto) obj;
-        if (this.stock != other.stock) {
-            return false;
-        }
-        if (Double.doubleToLongBits(this.precio) != Double.doubleToLongBits(other.precio)) {
-            return false;
-        }
-        if (this.id_categoria != other.id_categoria) {
-            return false;
-        }
-        if (this.marca != other.marca) {
-            return false;
-        }
-        if (!Objects.equals(this.nombre, other.nombre)) {
-            return false;
-        }
-        if (!Objects.equals(this.imagen, other.imagen)) {
-            return false;
-        }
-        return Objects.equals(this.id, other.id);
-    }
+    // @Override
+    // public boolean equals(Object obj) {
+    //     if (this == obj) {
+    //         return true;
+    //     }
+    //     if (obj == null) {
+    //         return false;
+    //     }
+    //     if (getClass() != obj.getClass()) {
+    //         return false;
+    //     }
+    //     final Producto other = (Producto) obj;
+    //     if (this.stock != other.stock) {
+    //         return false;
+    //     }
+    //     if (Double.doubleToLongBits(this.precio) != Double.doubleToLongBits(other.precio)) {
+    //         return false;
+    //     }
+    //     if (this.id_categoria != other.id_categoria) {
+    //         return false;
+    //     }
+    //     if (this.marca != other.marca) {
+    //         return false;
+    //     }
+    //     if (!Objects.equals(this.nombre, other.nombre)) {
+    //         return false;
+    //     }
+    //     if (!Objects.equals(this.imagen, other.imagen)) {
+    //         return false;
+    //     }
+    //     return Objects.equals(this.id, other.id);
+    // }
     
 }
