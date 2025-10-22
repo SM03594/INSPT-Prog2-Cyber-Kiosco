@@ -112,19 +112,6 @@ public class Producto {
     }
 
     @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 13 * hash + Objects.hashCode(this.id);
-        hash = 13 * hash + Objects.hashCode(this.nombre);
-        hash = 13 * hash + this.stock;
-        hash = 13 * hash + (int) (Double.doubleToLongBits(this.precio) ^ (Double.doubleToLongBits(this.precio) >>> 32));
-        hash = 13 * hash + Objects.hashCode(this.imagen);
-        hash = 13 * hash + this.id_categoria;
-        hash = 13 * hash + this.id_marca;
-        return hash;
-    }
-
-    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;

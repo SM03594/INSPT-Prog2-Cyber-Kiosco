@@ -1,3 +1,4 @@
+package com.cyberkiosco.cyberkiosco_springboot.service;
 
 import com.cyberkiosco.cyberkiosco_springboot.entity.Perfil;
 import com.cyberkiosco.cyberkiosco_springboot.entity.Usuario;
@@ -5,7 +6,6 @@ import com.cyberkiosco.cyberkiosco_springboot.service.PerfilService;
 import com.cyberkiosco.cyberkiosco_springboot.service.RolService;
 import com.cyberkiosco.cyberkiosco_springboot.service.UsuarioService;
 import java.util.ArrayList;
-import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

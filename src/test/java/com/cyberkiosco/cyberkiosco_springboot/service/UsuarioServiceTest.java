@@ -64,7 +64,7 @@ public class UsuarioServiceTest {
             System.out.println(usr.toString());
         }
         
-        assertEquals(7, listaUsuarios.size()); //en principio son 2 roles en total
+        assertEquals(7, listaUsuarios.size()); //en principio son 7 usuarios en total
     }
     
     @Test
