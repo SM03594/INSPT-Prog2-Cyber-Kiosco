@@ -2,6 +2,7 @@
 package com.cyberkiosco.cyberkiosco_springboot.service;
 
 import com.cyberkiosco.cyberkiosco_springboot.entity.Carrito;
+import com.cyberkiosco.cyberkiosco_springboot.entity.Usuario;
 import com.cyberkiosco.cyberkiosco_springboot.repository.CarritoRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,9 @@ public class CarritoService {
     
     @Autowired
     private CarritoRepository carritoRepository;
+    
+    @Autowired
+    private UsuarioService usuarioService;
     
     
     public List<Carrito> obtenerTodosLosCarritos() {
@@ -44,5 +48,20 @@ public class CarritoService {
         carritoRepository.saveAll(listaCarritos);
     }
     
+    public List<Carrito> encontrarPorId_usuario(long id_usuario) {
+        Usuario usr = usuarioService.encontrarPorId(id_usuario);
+        
+        if(usr == null) {
+            throw new IllegalArgumentException("El usuario cuyos carritos hay que buscar no existe.");
+        }
+        
+        return encontrarPorUsuario(usr);
+    }
+    
+    public List<Carrito> encontrarPorUsuario(Usuario usr) {
+        List<Carrito> listaCarritos = carritoRepository.findByUsuario(usr);
+
+        return listaCarritos;
+    }
     
 }

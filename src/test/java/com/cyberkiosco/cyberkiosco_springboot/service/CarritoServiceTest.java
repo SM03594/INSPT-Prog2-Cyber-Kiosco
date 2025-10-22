@@ -1,6 +1,7 @@
 package com.cyberkiosco.cyberkiosco_springboot.service;
 
 import com.cyberkiosco.cyberkiosco_springboot.entity.Carrito;
+import com.cyberkiosco.cyberkiosco_springboot.entity.Usuario;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
@@ -23,33 +24,40 @@ import org.springframework.test.context.ActiveProfiles;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 class CarritoServiceTest {
     
+    @Autowired
+    private CarritoService carritoService;
+    
+    @Autowired
+    private UsuarioService usuarioService;
+    
+    
     private Carrito crearCarritoEjemplo1() {
-        return new Carrito(
-            null,                                
-            45.50,                               
-            LocalDateTime.of(2025, 10, 1, 14, 30)
-        );
+        Carrito carrito = new Carrito();
+        carrito.setPrecio_total(45.50);
+        carrito.setUsuario(usuarioService.encontrarPorId(1L));
+        carrito.setFecha_compra(LocalDateTime.of(2025, 10, 1, 14, 30));
+        
+        return carrito;
     }
 
-    private Carrito crearCarritoEjemplo2() {
-        return new Carrito(
-            null,
-            22.30,
-            LocalDateTime.of(2025, 10, 5, 10, 0)
-        );
+    private Carrito crearCarritoEjemplo2() {        
+        Carrito carrito = new Carrito();
+        carrito.setPrecio_total(22.30);
+        carrito.setUsuario(usuarioService.encontrarPorId(2L));
+        carrito.setFecha_compra(LocalDateTime.of(2025, 10, 5, 10, 0));
+        
+        return carrito;
     }
 
     private Carrito crearCarritoEjemplo3() {
-        return new Carrito(
-            null,
-            89.90,
-            LocalDateTime.of(2025, 10, 12, 18, 45)
-        );
+        Carrito carrito = new Carrito();
+        carrito.setPrecio_total(89.90);
+        carrito.setUsuario(usuarioService.encontrarPorId(3L));
+        carrito.setFecha_compra(LocalDateTime.of(2025, 10, 12, 18, 45));
+        
+        return carrito;
     }
-
-
-    @Autowired
-    private CarritoService carritoService;
+    
     
     // Los tests se hacen en orden aleatorio excepto por el uso de @Order
 
@@ -74,6 +82,21 @@ class CarritoServiceTest {
         assertEquals(10L, total);
     }
 
+    @Test
+    @Order(3)
+    void obtenerListaCarritosDeUsuario() {
+        List<Carrito> listaCarritos;
+        Usuario usr = usuarioService.encontrarPorId(2L);
+        
+        listaCarritos = carritoService.encontrarPorId_usuario(usr.getId());
+        
+        assertEquals(2, listaCarritos.size()); //el usuario con id = 2 tiene 2 carritos en principio
+        
+        //verificar que todos los carritos pertenezcan al usuario correcto
+        for(int i = 0; i < listaCarritos.size(); i++) {
+            assertEquals(usr, listaCarritos.get(i).getUsuario());
+        }
+    }
     
     @Test
     void testEncontrarPorIdExistente() {

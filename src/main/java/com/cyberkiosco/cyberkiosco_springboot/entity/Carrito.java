@@ -1,11 +1,14 @@
 
 package com.cyberkiosco.cyberkiosco_springboot.entity;
 
+import com.cyberkiosco.cyberkiosco_springboot.entity.auxiliar.Validacion;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import lombok.AllArgsConstructor;
@@ -26,7 +29,10 @@ public class Carrito {
     private Long id;
     private double precio_total;
     private LocalDateTime fecha_compra;
-    //pendiente implementar usuario al que pertenece el carrito
+    
+    @ManyToOne
+    @JoinColumn(name = "id_usuario")
+    private Usuario usuario;
     
     
     public void setId(long id) {
@@ -58,6 +64,10 @@ public class Carrito {
         return "Carrito{" + "id=" + id + ", precio_total=" + precio_total + ", fecha_compra=" + fecha_compra + '}';
     }
 
+    public void setUsuario(Usuario usuario) {
+        Validacion.validarNotNull(usuario, "usuario");
+        this.usuario = usuario;
+    }
 
     @Override
     public boolean equals(Object obj) {
@@ -77,9 +87,11 @@ public class Carrito {
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }
-        return Objects.equals(this.fecha_compra, other.fecha_compra);
+        if (!Objects.equals(this.fecha_compra, other.fecha_compra)) {
+            return false;
+        }
+        return Objects.equals(this.usuario, other.usuario);
     }
-    
-    
-    
+
+   
 }
