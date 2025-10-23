@@ -25,42 +25,48 @@ class ProductoServiceTest {
 
     @Autowired
     private ProductoService productoService;
+    
+    @Autowired
+    private MarcaService marcaService;
+    
+    @Autowired
+    private CategoriaService categoriaService;
 
-
+    
     private Producto crearProductoEjemplo1() {
-        return new Producto(
-                null,  // hay que poner la id null porque le JPA se encarga de darsela
-                "Agua Mineral Saborizada",
-                10,
-                15.0,
-                "img/aguaMineralSaborizada.jpg",
-                2,
-                2
-        );
+        Producto prodNuevo = new Producto();
+        prodNuevo.setNombre("Agua Mineral Saborizada");
+        prodNuevo.setStock(10);
+        prodNuevo.setPrecio(15.0);
+        prodNuevo.setImagen("img/aguaMineralSaborizada.jpg");
+        prodNuevo.setMarca(marcaService.encontrarPorId(2L));
+        prodNuevo.setCategoria(categoriaService.encontrarPorId(2L));
+        
+        return prodNuevo;
     }
     
     private Producto crearProductoEjemplo2() {
-        return new Producto(
-                null,
-                "Barra de Fijoles",
-                35,
-                20.0,
-                "img/barraDeFijoles.png",
-                1,
-                3
-        );
+        Producto prodNuevo = new Producto();
+        prodNuevo.setNombre("Barra de Fijoles");
+        prodNuevo.setStock(35);
+        prodNuevo.setPrecio(20.0);
+        prodNuevo.setImagen("img/barraDeFijoles.png");
+        prodNuevo.setMarca(marcaService.encontrarPorId(1L));
+        prodNuevo.setCategoria(categoriaService.encontrarPorId(1L));
+        
+        return prodNuevo;
     }
     
     private Producto crearProductoEjemplo3() {
-        return new Producto(
-            null,
-            "Galletas Integrales",
-            50,
-            15.5,
-            "img/galletasIntegrales.png",
-            1,
-            4
-        );
+        Producto prodNuevo = new Producto();
+        prodNuevo.setNombre("Galletas Integrales");
+        prodNuevo.setStock(50);
+        prodNuevo.setPrecio(15.5);
+        prodNuevo.setImagen("img/galletasIntegrales.png");
+        prodNuevo.setMarca(marcaService.encontrarPorId(1L));
+        prodNuevo.setCategoria(categoriaService.encontrarPorId(1L));
+        
+        return prodNuevo;
     }
     
     // Los tests se hacen en orden aleatorio excepto por el uso de @Order
@@ -77,7 +83,33 @@ class ProductoServiceTest {
         
         assertEquals(15, listaProductos.size()); //en principio son 15 productos en total
     }
+    
+    
+    @Test
+    @Order(2) //porque luego si se agregan o eliminan registros con los otros tests falla
+    void testContarProductos() {
+        Long total = productoService.contarProductos(); 
+        assertEquals(15L, total);
+    }
 
+    
+    @Test
+    @Order(3) //porque luego si se agregan o eliminan registros con los otros tests falla
+    void testEncontrarPorMarca() {
+        Long id_marca = 1L; 
+        List<Producto> listaProductos = productoService.obtenerProductosPorMarca_Id(id_marca);
+        assertEquals(4, listaProductos.size()); //en principio a 4 productos de la marca con id 1
+    }
+    
+    
+    @Test
+    @Order(4) //porque luego si se agregan o eliminan registros con los otros tests falla
+    void testEncontrarPorCategoria() {
+        Long id_categoria = 1L; 
+        List<Producto> listaProductos = productoService.obtenerProductosPorCategoria_Id(id_categoria);
+        assertEquals(8, listaProductos.size()); //en principio a 8 productos de la categoira con id 1
+    }
+    
     
     @Test
     void testEncontrarPorIdExistente() {
@@ -128,15 +160,6 @@ class ProductoServiceTest {
         productoService.eliminarProductoPorId(1L); // -1 producto cantidad acutal 15
         
         assertFalse(productoService.existePorId(1L));
-    }
-
-    
-    @Test
-    @Order(2) //porque luego si se agregan o eliminan registros con los otros tests falla
-    void testContarProductos() {
-        Long total = productoService.contarProductos(); 
-        
-        assertEquals(15L, total);
     }
 
     

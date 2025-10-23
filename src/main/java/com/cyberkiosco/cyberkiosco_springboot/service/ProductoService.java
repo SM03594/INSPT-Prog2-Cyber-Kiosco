@@ -1,7 +1,10 @@
 
 package com.cyberkiosco.cyberkiosco_springboot.service;
 
+import com.cyberkiosco.cyberkiosco_springboot.entity.Categoria;
+import com.cyberkiosco.cyberkiosco_springboot.entity.Marca;
 import com.cyberkiosco.cyberkiosco_springboot.entity.Producto;
+import com.cyberkiosco.cyberkiosco_springboot.entity.auxiliar.Validacion;
 import com.cyberkiosco.cyberkiosco_springboot.repository.ProductoRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,12 @@ public class ProductoService {
     
     @Autowired
     private ProductoRepository productoRepository;
+    
+    @Autowired
+    private MarcaService marcaService;
+    
+    @Autowired
+    private CategoriaService categoriaService;
     
     
     public List<Producto> obtenerTodosLosProductos() {
@@ -44,5 +53,23 @@ public class ProductoService {
         productoRepository.saveAll(listaProductos);
     }
     
+    public List<Producto> obtenerProductosPorMarca(Marca marca) {
+        Validacion.validarNotNull(marca, "Marca");
+        return productoRepository.findByMarca(marca);
+    }
     
+    public List<Producto> obtenerProductosPorMarca_Id(Long id_marca) {
+        Marca marca = marcaService.encontrarPorId(id_marca);
+        return productoRepository.findByMarca(marca);
+    }
+    
+    public List<Producto> obtenerProductosPorCategoria(Categoria categoria) {
+        Validacion.validarNotNull(categoria, "Categoria");
+        return productoRepository.findByCategoria(categoria);
+    }
+    
+    public List<Producto> obtenerProductosPorCategoria_Id(Long id_categoria) {
+        Categoria categoria = categoriaService.encontrarPorId(id_categoria);
+        return productoRepository.findByCategoria(categoria);
+    }
 }

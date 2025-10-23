@@ -2,27 +2,35 @@
 package com.cyberkiosco.cyberkiosco_springboot.entity;
 
 import com.cyberkiosco.cyberkiosco_springboot.entity.exceptions.StockInsuficienteException;
+import com.cyberkiosco.cyberkiosco_springboot.service.CategoriaService;
+import com.cyberkiosco.cyberkiosco_springboot.service.MarcaService;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 
 
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
 public class ProductoEntityTest {
     
+    @Autowired
+    private MarcaService marcaService;
+    
+    @Autowired
+    private CategoriaService categoriaService;
+    
     private Producto crearProductoEj() {
-        return new Producto(
-                1L,
-                "caramelo",
-                5,
-                1.5,
-                "img/caramelo.jpg",
-                1,
-                3
-        );
+        Producto prodNuevo = new Producto();
+        prodNuevo.setNombre("Agua Mineral Saborizada");
+        prodNuevo.setStock(5);
+        prodNuevo.setPrecio(15.0);
+        prodNuevo.setImagen("img/aguaMineralSaborizada.jpg");
+        prodNuevo.setMarca(marcaService.encontrarPorId(2L));
+        prodNuevo.setCategoria(categoriaService.encontrarPorId(2L));
+        
+        return prodNuevo;
     }
     
 

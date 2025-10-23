@@ -54,7 +54,7 @@ public class MarcaServiceTest {
     
     @Test
     @Order(2) //porque luego si se agregan o eliminan registros con los otros tests falla
-    void testContarPerfiles() {
+    void testContarMarcas() {
         Long total = marcaService.contar(); 
         
         assertEquals(4L, total);
@@ -74,7 +74,7 @@ public class MarcaServiceTest {
     
     @Test
     @Order(4)
-    void testEliminarPerfilPorId() {
+    void testEliminarMarcaPorId() {
         assertTrue(marcaService.existePorId(3L));
         
         marcaService.eliminarPorId(3L);

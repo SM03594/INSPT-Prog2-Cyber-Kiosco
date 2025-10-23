@@ -1,12 +1,15 @@
 
 package com.cyberkiosco.cyberkiosco_springboot.entity;
 
+import com.cyberkiosco.cyberkiosco_springboot.entity.auxiliar.Validacion;
 import com.cyberkiosco.cyberkiosco_springboot.entity.exceptions.StockInsuficienteException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,9 +31,14 @@ public class Producto {
     private int stock;
     private double precio;
     private String imagen;
-    private int id_categoria;
-    private int id_marca;
-    //pendiente implementar categoria y marca correctamente con JPA
+    
+    @ManyToOne
+    @JoinColumn(name = "id_marca")
+    private Marca marca;  
+    
+    @ManyToOne
+    @JoinColumn(name = "id_categoria")
+    private Categoria categoria;
     
     
     public void setNombre(String nombre) {
@@ -91,24 +99,20 @@ public class Producto {
         }
         this.id = id;
     }
+
+    public void setMarca(Marca marca) {
+        Validacion.validarNotNull(marca, "Marca");
+        this.marca = marca;
+    }
     
-    public void setId_categoria(int id_categoria) {
-        if (id_categoria < 0) {
-            throw new IllegalArgumentException("El id_categoria no puede ser menor a cero.");
-        }
-        this.id_categoria = id_categoria;
+    public void setCategoria(Categoria categoria) {
+        Validacion.validarNotNull(categoria, "Categoria");
+        this.categoria = categoria;
     }
 
-    public void setId_marca(int id_marca) {
-        if (id_marca < 0) {
-            throw new IllegalArgumentException("El id_marca no puede ser menor a cero.");
-        }
-        this.id_marca = id_marca;
-    }
-    
     @Override
     public String toString() {
-        return "Producto{" + "id_producto=" + id + ", nombre=" + nombre + ", stock=" + stock + ", precio=" + precio + ", imagen=" + imagen + ", id_categoria=" + id_categoria + ", id_marca=" + id_marca + '}';
+        return "Producto{" + "id=" + id + ", nombre=" + nombre + ", stock=" + stock + ", precio=" + precio + ", imagen=" + imagen + ", marca=" + marca + ", categoria=" + categoria + '}';
     }
 
     @Override
@@ -129,19 +133,19 @@ public class Producto {
         if (Double.doubleToLongBits(this.precio) != Double.doubleToLongBits(other.precio)) {
             return false;
         }
-        if (this.id_categoria != other.id_categoria) {
-            return false;
-        }
-        if (this.id_marca != other.id_marca) {
-            return false;
-        }
         if (!Objects.equals(this.nombre, other.nombre)) {
             return false;
         }
         if (!Objects.equals(this.imagen, other.imagen)) {
             return false;
         }
-        return Objects.equals(this.id, other.id);
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        if (!Objects.equals(this.marca, other.marca)) {
+            return false;
+        }
+        return Objects.equals(this.categoria, other.categoria);
     }
-    
+
 }
