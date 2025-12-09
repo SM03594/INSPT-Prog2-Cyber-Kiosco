@@ -55,7 +55,10 @@ public class ProductoService {
     }
     
     public void eliminarProductoPorId(long id) {
-        productoRepository.deleteById(id);
+        Producto producto = this.encontrarPorId(id);
+        if (producto != null) {
+        producto.setActivo(false); // Lo marcamos como inactivo
+        productoRepository.save(producto); // Guardamos el cambio}
     }
     
     public long contarProductos() {
