@@ -34,7 +34,7 @@ public class ProductoService {
     }
     
     public Page<Producto> obtenerTodosLosProductos(Pageable pageable){
-        return this.productoRepository.findByActivoTrue(pageable);
+        return this.productoRepository.findAll(pageable);
     }
     
     public List<Producto> obtenerTodosLosProductos() {
@@ -55,10 +55,7 @@ public class ProductoService {
     }
     
     public void eliminarProductoPorId(long id) {
-        Producto producto = this.encontrarPorId(id);
-        if (producto != null) {
-        producto.setActivo(false); // Lo marcamos como inactivo
-        productoRepository.save(producto); // Guardamos el cambio}
+        this.productoRepository.deleteById(id);// Guardamos el cambio}
     }
     
     public long contarProductos() {
@@ -76,18 +73,18 @@ public class ProductoService {
     }
 
     public Page<Producto> obtenerProductosPorMarca(Marca marca, Pageable pageable){
-        return this.productoRepository.findByMarcaAndActivoTrue(marca, pageable);
+        return this.productoRepository.findByMarca(marca, pageable);
     }
     public Page<Producto> obtenerProductosPorCategoria(Categoria categoria, Pageable pageable){
-        return this.productoRepository.findByCategoriaAndActivoTrue(categoria, pageable);
+        return this.productoRepository.findByCategoria(categoria, pageable);
     }
 
     public List<Producto> obetenerProductosQueContinienen(String nombre){
-        return this.productoRepository.findByNombreLikeIgnoreCaseAndActivoTrue("%" + nombre + "%");
+        return this.productoRepository.findByNombreLikeIgnoreCase("%" + nombre + "%");
     }
     
     public Page<Producto> obetenerProductosQueContinienen(String nombre, Pageable pageable){
-        return this.productoRepository.findByNombreLikeIgnoreCaseAndActivoTrue("%" + nombre + "%", pageable);
+        return this.productoRepository.findByNombreLikeIgnoreCase("%" + nombre + "%", pageable);
     }
     
     public Page<Producto> obetenerProductosQueContinienen(String nombre, int page, int size) {
@@ -98,18 +95,18 @@ public class ProductoService {
     public Page<Producto> obtenerProductosPorMarca_Id(Long id_marca,int page, int size) {
         Marca marca = marcaService.encontrarPorId(id_marca);
         Pageable pageable = PageRequest.of(page, size, Sort.by("id"));
-        return this.obtenerProductosPorMarcaAndActivoTrue(marca, pageable);
+        return this.obtenerProductosPorMarca(marca, pageable);
     }
     
     public Page<Producto> obtenerProductosPorCategoria(Categoria categoria, int page, int size) {
         Validacion.validarNotNull(categoria, "Categoria");
         Pageable pageable = PageRequest.of(page, size, Sort.by("id"));
-        return productoRepository.findByCategoriaAndActivoTrue(categoria,pageable);
+        return productoRepository.findByCategoria(categoria,pageable);
     }
     
     public Page<Producto> obtenerProductosPorCategoria_Id(Long id_categoria, int page, int size) {
         Categoria categoria = categoriaService.encontrarPorId(id_categoria);
         Pageable pageable = PageRequest.of(page, size, Sort.by("id"));
-        return productoRepository.findByCategoriaAndActivoTrue(categoria,pageable);
+        return productoRepository.findByCategoria(categoria,pageable);
     }
 }

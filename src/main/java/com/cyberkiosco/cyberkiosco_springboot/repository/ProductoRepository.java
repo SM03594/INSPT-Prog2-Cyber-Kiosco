@@ -21,15 +21,5 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
     List<Producto> findByNombreLikeIgnoreCase(String nombre);
     Page<Producto> findByNombreLikeIgnoreCase(String nombre, Pageable pageable);
     // Buscar todos los activos paginados (para el index)
-    Page<Producto> findByActivoTrue(Pageable pageable);
-
-    // Buscar por nombre y que esté activo
-    Page<Producto> findByNombreLikeIgnoreCaseAndActivoTrue(String nombre, Pageable pageable);
-    
-    // Filtrar por Marca y Activo
-    Page<Producto> findByMarcaAndActivoTrue(Marca marca, Pageable pageable);
-
-    // Filtrar por Categoria y Activo
-    Page<Producto> findByCategoriaAndActivoTrue(Categoria categoria, Pageable pageable);
     
 }

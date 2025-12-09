@@ -32,8 +32,6 @@ public class Producto {
     private double precio;
     private String imagen;
     private String descripcion;
-    @Column(columnDefinition = "boolean default true")
-    private boolean activo = true;
     
     @ManyToOne
     @JoinColumn(name = "id_marca")
@@ -111,10 +109,6 @@ public class Producto {
     public void setCategoria(Categoria categoria) {
         Validacion.validarNotNull(categoria, "Categoria");
         this.categoria = categoria;
-    }
-
-    public void setActivo(boolean activo){
-        this.activo = activo;
     }
 
     @Override
